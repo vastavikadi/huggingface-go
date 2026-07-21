@@ -1,0 +1,2 @@
+## HuggingFace-Go
+- HuggingFace-Go is a Go client for the Hugging Face API, allowing developers to easily integrate Hugging Face's powerful machine learning models into their Go applications. This library provides a simple and intuitive interface for interacting with various models, including text generation, sentiment analysis, and more.
