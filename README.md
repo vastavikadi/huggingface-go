@@ -6,7 +6,6 @@
 
 [![Go Version](https://img.shields.io/badge/Go-1.19+-00ADD8?style=flat-square&logo=go)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Go Report Card](https://goreportcard.com/badge/github.com/vastavikadi/huggingface-go?style=flat-square)](https://goreportcard.com/report/github.com/vastavikadi/huggingface-go)
 [![GitHub stars](https://img.shields.io/github/stars/vastavikadi/huggingface-go?style=flat-square)](https://github.com/vastavikadi/huggingface-go)
 
 A Go SDK for the Hugging Face Inference API.
