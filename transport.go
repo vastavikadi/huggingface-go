@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 func (c *Client) do(
@@ -62,4 +63,18 @@ func (c *Client) do(
 	}
 
 	return nil
+}
+
+func (c *Client) doInference(
+	ctx context.Context,
+	model string,
+	task string,
+	req any,
+	resp any,
+) error {
+	path := fmt.Sprintf("/hf-inference/models/%s/pipeline/%s", url.PathEscape(model), task)
+
+	return c.do(
+		ctx, http.MethodPost, path, req, resp,
+	)
 }

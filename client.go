@@ -11,6 +11,7 @@ type (
 
 		httpClient *http.Client
 		Chat       *ChatService
+		Embeddings *EmbeddingService
 	}
 )
 
@@ -30,6 +31,10 @@ func NewClient(opts ...Option) *Client {
 
 	c.Chat = &ChatService{
 		Completions: completions,
+	}
+
+	c.Embeddings = &EmbeddingService{
+		client: c,
 	}
 
 	return c

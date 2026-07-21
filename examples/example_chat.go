@@ -3,18 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/vastavikadi/huggingface-go"
 )
 
-const HF_TOKEN = "your_hf_token"
-
-func main() {
-	hf_token := os.Getenv("HF_TOKEN")
-	if hf_token == "" {
-		hf_token = HF_TOKEN
-	}
+func ExampleChat(hf_token string) (string, error) {
 	client := huggingface.NewClient(huggingface.WithToken(hf_token))
 
 	resp, err := client.Chat.Completions.Create(
@@ -29,8 +22,8 @@ func main() {
 		},
 	)
 	if err != nil {
-		fmt.Println("error chat: ", err)
+		return "", fmt.Errorf("error chat: %v", err)
 	}
 
-	fmt.Println(resp.Choices[0].Message.Content)
+	return (resp.Choices[0].Message.Content), nil
 }
