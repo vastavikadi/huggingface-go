@@ -6,10 +6,10 @@ import (
 	"fmt"
 )
 
-func (s *ImageService) Generate(ctx context.Context, req ImageGenerationRequest) (ImageGenerationResponse, error) {
+func (s *VideoService) Generate(ctx context.Context, req VideoGenerationRequest) (VideoGenerationResponse, error) {
 	if err := req.Validate(); err != nil {
 		fmt.Println("err from req.Validate: ", err)
-		return ImageGenerationResponse{}, err
+		return VideoGenerationResponse{}, err
 	}
 
 	// body := struct {
@@ -21,8 +21,7 @@ func (s *ImageService) Generate(ctx context.Context, req ImageGenerationRequest)
 	// }
 
 	var body FalAIRequest
-	var falAiResp FalAIResponseImage
-	var imageGenResp ImageGenerationResponse
+	var falAiResp FalAIResponseVideo
 
 	body.Prompt = req.Prompt
 
@@ -32,29 +31,26 @@ func (s *ImageService) Generate(ctx context.Context, req ImageGenerationRequest)
 		body,
 		&falAiResp,
 	)
-
 	if err != nil {
 		fmt.Println("err from s.client.doInferenceRaw: ", err)
-		return ImageGenerationResponse{}, err
+		return VideoGenerationResponse{}, err
 	}
 
-	for _, v := range falAiResp.Images {
-		imageGenResp.Image = v.URL
-		imageGenResp.ContentType = v.ContentType
-	}
+	var videoGenResp VideoGenerationResponse
 
-	err = saveContent(imageGenResp.Image)
+	videoGenResp.Video = falAiResp.Videos.URL
+	videoGenResp.ContentType = falAiResp.Videos.ContentType
+
+	err = saveContent(videoGenResp.Video)
 	if err != nil {
-		fmt.Println("err from saveImage: ", err)
-		return ImageGenerationResponse{}, err
+		fmt.Println("err from saveVideo: ", err)
+		return VideoGenerationResponse{}, err
 	}
 
-	fmt.Printf("imageGenResp %+v", imageGenResp)
-
-	return imageGenResp, nil
+	return videoGenResp, nil
 }
 
-func (r ImageGenerationRequest) Validate() error {
+func (r VideoGenerationRequest) Validate() error {
 	if r.Model == "" {
 		return errors.New("model is required")
 	}

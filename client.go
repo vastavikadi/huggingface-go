@@ -13,6 +13,7 @@ type (
 		Chat       *ChatService
 		Embeddings *EmbeddingService
 		ImageGen   *ImageService
+		VideoGen   *VideoService
 	}
 )
 
@@ -39,6 +40,10 @@ func NewClient(opts ...Option) *Client {
 	}
 
 	c.ImageGen = &ImageService{
+		client: c,
+	}
+
+	c.VideoGen = &VideoService{
 		client: c,
 	}
 

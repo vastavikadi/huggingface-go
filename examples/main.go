@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-// const HF_TOKEN = "set_your_huggingface_token_here"
+// const HF_TOKEN = ""
 
 func main() {
 	hf_token := os.Getenv("HF_TOKEN")
@@ -14,20 +14,20 @@ func main() {
 	// }
 
 	// chat api demo
-	// res, err := ExampleChat(hf_token)
-	// if err != nil {
-	// 	fmt.Println("error generating chat: ", err)
-	// }
+	res, err := ExampleChat(hf_token)
+	if err != nil {
+		fmt.Println("error generating chat: ", err)
+	}
 
-	// fmt.Println("res from chat: ", res)
+	fmt.Println("res from chat: ", res)
 
 	// Embeddings api demo
-	// resp, err := ExampleEmbeddings(hf_token)
-	// if err != nil {
-	// 	fmt.Println("error creating embeddings: ", err)
-	// }
+	resp, err := ExampleEmbeddings(hf_token)
+	if err != nil {
+		fmt.Println("error creating embeddings: ", err)
+	}
 
-	// fmt.Println("resp creating embeddings: ", resp)
+	fmt.Println("resp creating embeddings: ", resp)
 
 	// ImageGen api demo
 	imgPath, err := ExampleImageGen(hf_token)
@@ -36,4 +36,12 @@ func main() {
 	}
 
 	fmt.Println("resp creating images: ", imgPath)
+
+	// VideoGen api demo
+	videoPath, err := ExampleVideoGen(hf_token)
+	if err != nil {
+		fmt.Println("error creating video: ", err)
+	}
+
+	fmt.Println("resp creating videos: ", videoPath)
 }

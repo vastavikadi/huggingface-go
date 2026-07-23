@@ -25,6 +25,9 @@ HuggingFace-Go provides an idiomatic Go interface for interacting with Hugging F
 - Configurable HTTP client
 - Functional options
 - Lightweight with minimal dependencies
+- Supports image and video generation via FalAI provider
+
+> NOTE: huggingface has deprecated the `hf-inference` endpoint for image and video generation. This SDK uses the `fal-ai` provider for these tasks. There are many other providers available for image and video generation, but this SDK currently only supports `fal-ai`. If you want to use other providers, please open an issue or submit a PR.
 
 ## Installation
 
@@ -65,12 +68,37 @@ embedding, err := client.Embed(
 )
 ```
 
+### Image Generation
+
+```go
+imageResp, err := client.Image.Generate(
+    context.Background(),
+    huggingface.ImageGenerationRequest{
+        Model:  "black-forest-labs/FLUX.1-dev",
+        Prompt: "A futuristic cityscape at sunset",
+    },
+)
+```
+
+### Video Generation
+
+```go
+videoResp, err := client.Video.Generate(
+    context.Background(),
+    huggingface.VideoGenerationRequest{
+        Model:  "Wan-AI/Wan2.2-TI2V-5B",
+        Prompt: "A futuristic cityscape at sunset",
+    },
+)
+```
+
 ## Roadmap
 
 - [x] Chat Completions
 - [x] Text Embeddings
+- [x] Image Generation
+- [x] Video Generation
 - [ ] Streaming
-- [ ] Image Generation
 - [ ] Audio
 - [ ] Vision
 - [ ] Additional Hugging Face inference tasks
@@ -83,7 +111,10 @@ Explore the `examples/` directory for comprehensive usage examples:
 |------|---------|
 | `example_chat.go` | 💬 Chat completions example |
 | `example_embeddings.go` | 🧮 Text embedding generation example |
+| `example_imageGen.go` | 🖼️ Image generation example |
+| `example_videoGen.go` | 🎬 Video generation example |
 | `main.go` | 🎯 Execute the examples |
+
 
 ### Running Examples
 

@@ -79,20 +79,23 @@ func (c *Client) doInference(
 	)
 }
 
-func (c *Client) doInferenceRaw(ctx context.Context, model string, reqBody any) (FalAIResponse, error) {
+func (c *Client) doInferenceRaw(ctx context.Context, model string, reqBody any, out any) error {
 
 	inferenceRes, err := GetProviders(model)
 	if err != nil {
 		fmt.Println("err from inferenceRes: ", err)
-		return FalAIResponse{}, err
+		return err
 	}
 	var provider string
 	var providerId string
 
 	for i, v := range inferenceRes.InferenceProviderMapping {
-		provider = i
-		providerId = v.ProviderID
-		break
+		// as of now, it only supports fal-ai provider for image and video generation
+		if i == "fal-ai" {
+			provider = i
+			providerId = v.ProviderID
+			break
+		}
 	}
 
 	path := fmt.Sprintf("/%s/%s", provider, providerId)
@@ -103,7 +106,7 @@ func (c *Client) doInferenceRaw(ctx context.Context, model string, reqBody any) 
 		b, err := json.Marshal(reqBody)
 		if err != nil {
 			fmt.Println("err from json.Marshal(reqBody): ", err)
-			return FalAIResponse{}, err
+			return err
 		}
 
 		body = bytes.NewBuffer(b)
@@ -112,7 +115,7 @@ func (c *Client) doInferenceRaw(ctx context.Context, model string, reqBody any) 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, c.baseUrl+path, body)
 	if err != nil {
 		fmt.Println("err from http.NewRequestWithContext: ", err)
-		return FalAIResponse{}, err
+		return err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -124,7 +127,7 @@ func (c *Client) doInferenceRaw(ctx context.Context, model string, reqBody any) 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		fmt.Println("err from c.httpClient.Do: ", err)
-		return FalAIResponse{}, err
+		return err
 	}
 
 	defer res.Body.Close()
@@ -132,23 +135,15 @@ func (c *Client) doInferenceRaw(ctx context.Context, model string, reqBody any) 
 	data, err := io.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println("err from io.ReadAll: ", err)
-		return FalAIResponse{}, err
+		return err
 	}
 
 	if res.StatusCode >= 400 {
 		fmt.Println("err from inference response: ", fmt.Errorf("huggingface: status %d: %s", res.StatusCode, string(data)))
-		return FalAIResponse{}, fmt.Errorf("huggingface: status %d: %s", res.StatusCode, string(data))
+		return fmt.Errorf("huggingface: status %d: %s", res.StatusCode, string(data))
 	}
 
-	var falAiResp FalAIResponse
-
-	err = json.Unmarshal(data, &falAiResp)
-	if err != nil {
-		fmt.Println("err from json.Unmarshal: ", err)
-		return FalAIResponse{}, err
-	}
-
-	return falAiResp, nil
+	return (json.Unmarshal(data, &out))
 }
 
 // providers are required for image generations

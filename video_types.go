@@ -1,13 +1,13 @@
 package huggingface
 
-type ImageGenerationRequest struct {
+type VideoGenerationRequest struct {
 	Model  string `json:"model"`
 	Prompt string `json:"prompt"`
 
-	Parameters *ImageGenerationParameters `json:"parameters,omitempty"`
+	Parameters *VideoGenerationParameters `json:"parameters,omitempty"`
 }
 
-type ImageGenerationParameters struct {
+type VideoGenerationParameters struct {
 	NegativePrompt    *string  `json:"negative_prompt,omitempty"`
 	GuidanceScale     *float64 `json:"guidance_scale,omitempty"`
 	NumInferenceSteps *int     `json:"num_inference_steps,omitempty"`
@@ -17,26 +17,24 @@ type ImageGenerationParameters struct {
 	Seed              *int     `json:"seed,omitempty"`
 }
 
-type ImageGenerationResponse struct {
-	Image       string
+type VideoGenerationResponse struct {
+	Video       string
 	ContentType string
 }
 
-type ImageService struct {
+type VideoService struct {
 	client *Client
 }
 
-type FalAIResponseImage struct {
-	Images          []Image `json:"images"`
-	Timings         Timings `json:"timings"`
-	Seed            int     `json:"seed"`
-	HasNSFWConcepts []bool  `json:"has_nsfw_concepts"`
-	Prompt          string  `json:"prompt"`
+type FalAIResponseVideo struct {
+	Videos Video `json:"video"`
+	Seed   int     `json:"seed"`
+	Prompt string  `json:"prompt"`
 }
 
-type Image struct {
+type Video struct {
 	URL         string `json:"url"`
-	Width       int    `json:"width"`
-	Height      int    `json:"height"`
 	ContentType string `json:"content_type"`
+	FileName    string `json:"file_name"`
+	FileSize    int    `json:"file_size"`
 }
