@@ -12,6 +12,7 @@ type (
 		httpClient *http.Client
 		Chat       *ChatService
 		Embeddings *EmbeddingService
+		ImageGen   *ImageService
 	}
 )
 
@@ -34,6 +35,10 @@ func NewClient(opts ...Option) *Client {
 	}
 
 	c.Embeddings = &EmbeddingService{
+		client: c,
+	}
+
+	c.ImageGen = &ImageService{
 		client: c,
 	}
 

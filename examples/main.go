@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-// const HF_TOKEN = "set_your_hf_token"
+// const HF_TOKEN = "set_your_huggingface_token_here"
 
 func main() {
 	hf_token := os.Getenv("HF_TOKEN")
@@ -14,18 +14,26 @@ func main() {
 	// }
 
 	// chat api demo
-	res, err := ExampleChat(hf_token)
-	if err != nil {
-		fmt.Println("error generating chat: ", err)
-	}
+	// res, err := ExampleChat(hf_token)
+	// if err != nil {
+	// 	fmt.Println("error generating chat: ", err)
+	// }
 
-	fmt.Println("res from chat: ", res)
+	// fmt.Println("res from chat: ", res)
 
 	// Embeddings api demo
-	resp, err := ExampleEmbeddings(hf_token)
+	// resp, err := ExampleEmbeddings(hf_token)
+	// if err != nil {
+	// 	fmt.Println("error creating embeddings: ", err)
+	// }
+
+	// fmt.Println("resp creating embeddings: ", resp)
+
+	// ImageGen api demo
+	imgPath, err := ExampleImageGen(hf_token)
 	if err != nil {
-		fmt.Println("error creating embeddings: ", err)
+		fmt.Println("error creating image: ", err)
 	}
 
-	fmt.Println("resp creating embeddings: ", resp)
+	fmt.Println("resp creating images: ", imgPath)
 }
